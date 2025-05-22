@@ -17,6 +17,8 @@
   <svg id="graph" width="600" height="400"></svg>
   <script>
     const SHOW_LABEL_ZOOM = 2; // constant to show labels
+    const BASE_RADIUS = 10;
+    const BASE_FONT_SIZE = 10;
     const width = 600;
     const height = 400;
 
@@ -52,8 +54,8 @@
       .enter().append('g')
       .attr('class', 'node');
 
-    node.append('circle')
-      .attr('r', 10);
+    const circle = node.append('circle')
+      .attr('r', BASE_RADIUS);
 
     const label = node.append('text')
       .attr('class', 'label')
@@ -77,6 +79,8 @@
       .scaleExtent([0.5, 5])
       .on('zoom', (event) => {
         g.attr('transform', event.transform);
+        circle.attr('r', BASE_RADIUS * event.transform.k);
+        label.style('font-size', `${BASE_FONT_SIZE * event.transform.k}px`);
         label.style("display", event.transform.k >= SHOW_LABEL_ZOOM ? "block" : "none");
       });
 
